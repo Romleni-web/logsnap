@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic[email]
+supabase
+google-generativeai
+PyGithub
+redis
+python-dotenv
+slowapi
+python-multipart
+httpx
