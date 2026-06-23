@@ -8,11 +8,9 @@ import Settings from './pages/Settings';
 import Admin from './pages/Admin';
 
 const ProtectedRoute = ({ children }) => {
-
-const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
-  if (loading) return <div className="h-screen w-full flex items-center justify-center bg-slate-900 text-white">Loading...</div>;
+  if (loading) return <div className="h-screen w-full flex items-center justify-center bg-white text-black">Loading...</div>;
   if (!user) return <Navigate to="/login" />;
 
   return children;
