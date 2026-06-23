@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import StatsCards from '../components/StatsCards';
 import HistoryTable from '../components/HistoryTable';
 import client from '../api/client';
-import { Terminal, Code, GitPullRequest, Plus, Sparkles, X, Link as LinkIcon, FileText } from 'lucide-react';
+import { Terminal, Code, Plus, Sparkles, X, Link as LinkIcon, FileText, Loader2, Cpu } from 'lucide-react';
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -54,127 +54,132 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="flex justify-between items-end mb-10">
-        <div>
-          <h2 className="text-4xl font-black tracking-tight text-white mb-2">Systems Overview</h2>
-          <p className="text-slate-400 font-medium">Monitor your AI debugging performance and history.</p>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+        <div className="space-y-2">
+          <div className="flex items-center gap-3 text-blue-500 font-display font-black tracking-widest text-xs">
+            <Cpu size={14} className="animate-pulse" />
+            SYSTEM STATUS: OPERATIONAL
+          </div>
+          <h2 className="text-5xl font-display font-black tracking-tighter text-white italic">
+            OPERATIONS <span className="text-blue-500 underline decoration-4 underline-offset-8">HUB</span>
+          </h2>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="btn-primary py-3 px-8 rounded-2xl flex items-center gap-2 group"
+          className="btn-primary py-4 px-10 rounded-xl flex items-center gap-3 group"
         >
           <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
-          <span className="text-lg">Start Debug Session</span>
+          <span>INITIALIZE DEBUG</span>
         </button>
       </div>
 
       <StatsCards stats={stats} />
 
       <div className="space-y-6">
-        <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-xs ml-1">
-          <Activity size={14} className="text-blue-500" />
-          Recent Activity
+        <div className="flex items-center justify-between ml-1">
+          <div className="flex items-center gap-3 text-slate-500 font-display font-bold tracking-[0.3em] text-[10px]">
+            <div className="w-8 h-[2px] bg-blue-600"></div>
+            MISSION LOGS
+          </div>
         </div>
         <HistoryTable history={history} loading={loading} />
       </div>
 
       {/* Debug Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-[#020617]/80 backdrop-blur-md flex items-center justify-center p-6 z-50">
-          <div className="glass-card w-full max-w-3xl rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_-12px_rgba(59,130,246,0.3)] animate-in fade-in zoom-in duration-300">
-            <div className="p-8 border-b border-slate-800/50 flex justify-between items-center bg-slate-900/20">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-600/20 rounded-lg">
-                   <Sparkles className="text-blue-400" size={20} />
+        <div className="fixed inset-0 bg-[#000]/90 backdrop-blur-sm flex items-center justify-center p-6 z-50">
+          <div className="glass-card w-full max-w-3xl rounded-3xl overflow-hidden border-2 border-slate-800 animate-in fade-in zoom-in duration-300">
+            <div className="p-10 border-b border-slate-800 flex justify-between items-center bg-slate-900/40">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-blue-600 rounded-2xl shadow-lg shadow-blue-500/20">
+                   <Sparkles className="text-white fill-white" size={24} />
                 </div>
-                <h3 className="text-2xl font-bold tracking-tight text-white">New AI Debug Session</h3>
+                <h3 className="text-3xl font-display font-black italic tracking-tighter text-white uppercase">AI ANALYTICS ENGINE</h3>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-2 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-colors"
+                className="p-3 hover:bg-slate-800 rounded-full text-slate-500 hover:text-white transition-all"
               >
                 <X size={24} />
               </button>
             </div>
 
-            <form onSubmit={handleDebug} className="p-8 space-y-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-300 flex items-center gap-2">
-                    <LinkIcon size={14} className="text-blue-500" /> Repository URL
+            <form onSubmit={handleDebug} className="p-10 space-y-8">
+              <div className="grid grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-500 tracking-widest uppercase flex items-center gap-2">
+                    <LinkIcon size={12} className="text-blue-500" /> REPOSITORY URL
                   </label>
                   <input
                     type="text"
                     required
                     placeholder="https://github.com/user/repo"
-                    className="w-full input-field py-3"
+                    className="w-full input-field"
                     value={debugData.repo_url}
                     onChange={e => setDebugData({...debugData, repo_url: e.target.value})}
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-300 flex items-center gap-2">
-                    <FileText size={14} className="text-blue-500" /> File Path
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-500 tracking-widest uppercase flex items-center gap-2">
+                    <FileText size={12} className="text-blue-500" /> FILE PATH
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="src/services/auth.py"
-                    className="w-full input-field py-3"
+                    placeholder="src/main.py"
+                    className="w-full input-field"
                     value={debugData.file_path}
                     onChange={e => setDebugData({...debugData, file_path: e.target.value})}
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-300 flex items-center gap-2">
-                  <Terminal size={14} className="text-red-400" /> Error Log Snippet
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-500 tracking-widest uppercase flex items-center gap-2">
+                  <Terminal size={12} className="text-red-500" /> ERROR DATA
                 </label>
                 <textarea
                   required
                   rows="3"
-                  placeholder="Paste the traceback or error message here..."
-                  className="w-full input-field py-3 font-mono text-xs resize-none"
+                  className="w-full input-field font-mono"
                   value={debugData.log}
                   onChange={e => setDebugData({...debugData, log: e.target.value})}
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-300 flex items-center gap-2">
-                  <Code size={14} className="text-emerald-400" /> Affected Source Code
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-500 tracking-widest uppercase flex items-center gap-2">
+                  <Code size={12} className="text-emerald-500" /> CONTEXT CODE
                 </label>
                 <textarea
                   required
-                  rows="5"
-                  placeholder="Paste the relevant function or class..."
-                  className="w-full input-field py-3 font-mono text-xs resize-none"
+                  rows="4"
+                  className="w-full input-field font-mono"
                   value={debugData.code}
                   onChange={e => setDebugData({...debugData, code: e.target.value})}
                 />
               </div>
 
-              <div className="pt-4">
+              <div className="pt-4 flex flex-col items-center gap-6">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full btn-primary py-4 rounded-2xl flex items-center justify-center gap-3 shadow-blue-900/40"
+                  className="w-full btn-primary py-5 rounded-2xl flex items-center justify-center gap-4 text-xl italic font-black shadow-blue-600/30"
                 >
                   {loading ? (
                     <>
                       <Loader2 className="animate-spin" size={24} />
-                      <span className="text-lg font-bold">AI Analyzing...</span>
+                      <span>ANALYZING...</span>
                     </>
                   ) : (
                     <>
                       <Sparkles size={24} className="fill-white" />
-                      <span className="text-lg font-bold">Generate Fix & Open PR</span>
+                      <span>EXECUTE AUTO-FIX</span>
                     </>
                   )}
                 </button>
-                <p className="text-center text-xs text-slate-500 mt-4 font-medium">
-                  LogSnap AI will analyze the code, generate a fix, create a new branch, and open a PR.
+                <p className="text-[10px] text-slate-600 font-black tracking-widest uppercase">
+                  LogSnap v27.5 // AI-POWERED DEBUGGING INTERFACE
                 </p>
               </div>
             </form>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, CheckCircle2, AlertCircle, Zap, ArrowRight, Github } from 'lucide-react';
+import { ExternalLink, CheckCircle2, AlertCircle, Zap, ArrowRight, Github, Activity } from 'lucide-react';
 
 export default function HistoryTable({ history, loading }) {
   return (

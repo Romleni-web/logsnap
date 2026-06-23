@@ -17,7 +17,6 @@ export default function Register() {
 
     try {
       // Register with backend (this handles Supabase + our DB)
-      // The backend calls supabase.auth.sign_up, so we don't call it again on frontend
       await client.post('/api/auth/register', { email, password });
 
       // Attempt login immediately after registration
@@ -44,44 +43,44 @@ export default function Register() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#020617] p-6 relative overflow-hidden">
       {/* Decorative Blur */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none"></div>
 
-      <div className="w-full max-w-md space-y-8 glass-card p-10 rounded-[2.5rem] relative z-10">
+      <div className="w-full max-w-md space-y-10 glass-card p-12 rounded-[2.5rem] relative z-10 border-t-4 border-t-blue-600">
         <div className="text-center">
-          <div className="flex justify-center mb-6">
-            <div className="bg-blue-600 p-4 rounded-3xl shadow-xl shadow-blue-500/20 animate-glow">
-              <Zap className="text-white fill-white" size={32} />
+          <div className="flex justify-center mb-8">
+            <div className="bg-blue-600 p-5 rounded-[2rem] shadow-[0_0_40px_rgba(59,130,246,0.5)] animate-glow">
+              <Zap className="text-white fill-white" size={40} />
             </div>
           </div>
-          <h2 className="text-4xl font-black tracking-tight text-white mb-2">Create Account</h2>
-          <p className="text-slate-400 font-medium">Elevate your debugging with AI</p>
+          <h2 className="text-4xl font-display font-black tracking-tighter text-white mb-2 italic uppercase">OPERATOR ENROLLMENT</h2>
+          <p className="text-slate-500 font-bold text-[10px] tracking-[0.3em] uppercase">Initialize New Profile // V27.5</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-300 ml-1">Email Address</label>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-500 tracking-widest uppercase ml-1">ASSIGN IDENTIFIER</label>
               <div className="relative group">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={18} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-blue-500 transition-colors" size={18} />
                 <input
                   type="email"
                   required
-                  placeholder="name@company.com"
-                  className="w-full bg-slate-950/50 border border-slate-800 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-600"
+                  placeholder="ID_000@LOGSNAP.AI"
+                  className="w-full bg-black/40 border border-slate-800 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 outline-none transition-all placeholder:text-slate-800 font-bold text-sm tracking-tight text-white"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                 />
               </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-300 ml-1">Password</label>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-500 tracking-widest uppercase ml-1">GENERATE ACCESS KEY</label>
               <div className="relative group">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={18} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-blue-500 transition-colors" size={18} />
                 <input
                   type="password"
                   required
                   placeholder="••••••••"
-                  className="w-full bg-slate-950/50 border border-slate-800 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-600"
+                  className="w-full bg-black/40 border border-slate-800 rounded-xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 outline-none transition-all placeholder:text-slate-800 font-bold text-sm text-white"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
@@ -92,22 +91,22 @@ export default function Register() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full btn-primary py-4 rounded-xl flex items-center justify-center gap-2 group"
+            className="w-full btn-primary py-5 rounded-2xl flex items-center justify-center gap-3 text-lg italic font-black shadow-blue-600/30 active:scale-95 transition-transform"
           >
             {loading ? (
-              <Loader2 className="animate-spin" size={20} />
+              <Loader2 className="animate-spin" size={24} />
             ) : (
               <>
                 <UserPlus size={20} />
-                <span className="text-lg">Get Started</span>
+                <span>START COMMISSION</span>
               </>
             )}
           </button>
         </form>
 
-        <div className="pt-4 text-center">
-          <p className="text-slate-500 text-sm font-medium">
-            Already a member? <Link to="/login" className="text-blue-400 hover:text-blue-300 underline underline-offset-4 decoration-2">Sign in here</Link>
+        <div className="pt-6 text-center border-t border-slate-800/50">
+          <p className="text-slate-600 text-[10px] font-black tracking-[0.2em] uppercase">
+            EXISTING OPERATOR? <Link to="/login" className="text-blue-500 hover:text-blue-400 underline underline-offset-8 decoration-2 ml-2 transition-colors">LOGIN HERE</Link>
           </p>
         </div>
       </div>
