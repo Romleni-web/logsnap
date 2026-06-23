@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .app.routers import debug, dashboard, auth, health
+from app.routers import debug, dashboard, auth, health
 
 app = FastAPI(title="LogSnap API")
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from ..models.schemas import UserCreate, User
-from ..core.supabase_client import get_supabase
+from app.models.schemas import UserCreate, User
+from app.core.supabase_client import get_supabase
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 

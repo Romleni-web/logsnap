@@ -1,5 +1,5 @@
 from fastapi import Request, HTTPException
-from ..core.supabase_client import get_supabase
+from app.core.supabase_client import get_supabase
 
 async def check_usage_limit(request: Request):
     # This assumes we have a way to identify the user, e.g., from a JWT token

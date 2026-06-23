@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Header, HTTPException
-from ..core.supabase_client import get_supabase
-from ..models.schemas import DashboardStats
+from app.core.supabase_client import get_supabase
+from app.models.schemas import DashboardStats
 
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 

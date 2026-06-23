@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Header, HTTPException, Depends
-from ..models.schemas import DebugRequest, DebugResponse
-from ..core.cache import get_cache_key, get_cached_fix, set_cached_fix
-from ..core.ai_client import generate_fix
-from ..core.github_client import create_pull_request
-from ..core.supabase_client import get_supabase
-from ..middleware.usage_tracker import check_usage_limit
+from app.models.schemas import DebugRequest, DebugResponse
+from app.core.cache import get_cache_key, get_cached_fix, set_cached_fix
+from app.core.ai_client import generate_fix
+from app.core.github_client import create_pull_request
+from app.core.supabase_client import get_supabase
+from app.middleware.usage_tracker import check_usage_limit
 
 router = APIRouter(prefix="/api", tags=["debug"])
 
