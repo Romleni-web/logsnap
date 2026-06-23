@@ -1,3 +1,4 @@
+import os
 from fastapi import APIRouter, Header, HTTPException
 from app.core.supabase_client import get_supabase
 from datetime import datetime, timedelta
@@ -8,8 +9,10 @@ router = APIRouter(prefix="/api/admin", tags=["admin"])
 async def get_admin_stats(x_user_id: str = Header(...)):
     supabase = get_supabase()
 
-    # Simple Admin Check: In production, check a 'role' column in DB
-    # user = supabase.table('users').select('role').eq('id', x_user_id).execute()
+    # Admin Check
+    user_res = supabase.table('users').select('email').eq('id', x_user_id).execute()
+    if not user_res.data or user_res.data[0]['email'] != os.getenv("ADMIN_EMAIL"):
+        raise HTTPException(status_code=403, detail="Access denied: Admin privileges required.")
 
     # Get all users
     users_res = supabase.table('users').select('*').execute()

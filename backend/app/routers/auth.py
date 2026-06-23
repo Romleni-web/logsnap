@@ -10,18 +10,31 @@ async def mpesa_stk_push(payload: dict):
     phone = payload.get("phone")
     user_id = payload.get("user_id")
 
+    print(f"STK Push Request: phone={phone}, user_id={user_id}") # Debug log
+
     if not phone or not user_id:
-        raise HTTPException(status_code=400, detail="Phone number and User ID required")
+        raise HTTPException(status_code=400, detail=f"Phone ({phone}) and User ID ({user_id}) required")
 
     # Clean phone number (must be 254...)
+    phone = phone.strip()
     if phone.startswith("0"):
         phone = "254" + phone[1:]
     elif phone.startswith("+"):
         phone = phone[1:]
+    elif phone.startswith("7") or phone.startswith("1"):
+        phone = "254" + phone
 
-    # For Pro plan, we'll set a fixed amount, e.g., 2900 KES
-    response = initiate_stk_push(phone, 2900)
-    return response
+    # Ensure it's all digits and correct length for KE
+    if not phone.isdigit() or len(phone) < 10:
+         raise HTTPException(status_code=400, detail="Invalid phone number format")
+
+    try:
+        # For Pro plan, we'll set a fixed amount, e.g., 2900 KES
+        response = initiate_stk_push(phone, 2900)
+        return response
+    except Exception as e:
+        print(f"MPESA Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"M-Pesa initialization failed: {str(e)}")
 
 @router.post("/mpesa-callback")
 async def mpesa_callback(request: Request):

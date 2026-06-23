@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import client from '../api/client';
+import { useAuth } from '../hooks/useAuth';
 import { Github, Save, Shield, Database, CreditCard, Sparkles, Loader2 } from 'lucide-react';
 import SubscriptionCard from '../components/SubscriptionCard';
 
 export default function Settings() {
+  const { user } = useAuth();
   const [githubToken, setGithubToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
@@ -114,7 +116,7 @@ export default function Settings() {
                 <CreditCard size={14} className="text-[#d4af37]" />
                 BILLING CENTER
              </div>
-             <SubscriptionCard stats={stats} />
+             <SubscriptionCard stats={stats} user={user} />
           </div>
         </div>
       </div>

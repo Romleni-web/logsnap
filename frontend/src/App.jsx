@@ -16,6 +16,15 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div className="h-screen w-full flex items-center justify-center bg-white text-black">Loading...</div>;
+  if (!user || user.email !== import.meta.env.VITE_ADMIN_EMAIL) return <Navigate to="/" />;
+
+  return children;
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -42,9 +51,9 @@ function App() {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <AdminRoute>
                 <Admin />
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
         </Routes>

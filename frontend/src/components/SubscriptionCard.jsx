@@ -10,11 +10,13 @@ export default function SubscriptionCard({ user, stats }) {
   const handleUpgrade = async (e) => {
     e.preventDefault();
     if (!phone) return alert("Please enter your M-Pesa phone number");
+    if (!user?.id) return alert("Authentication error: Please log in again.");
 
     setLoading(true);
     try {
+      console.log("Initiating STK Push for user:", user.id, "phone:", phone);
       const response = await client.post('/api/auth/stk-push', {
-        user_id: user?.id,
+        user_id: user.id,
         phone: phone
       });
 

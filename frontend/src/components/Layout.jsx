@@ -14,10 +14,12 @@ export default function Layout({ children }) {
     navigate('/login');
   };
 
+  const isAdmin = user?.email === import.meta.env.VITE_ADMIN_EMAIL;
+
   const navItems = [
     { label: 'DASHBOARD', icon: LayoutDashboard, path: '/' },
     { label: 'SETTINGS', icon: Settings, path: '/settings' },
-    { label: 'ADMIN', icon: BarChart3, path: '/admin' },
+    ...(isAdmin ? [{ label: 'ADMIN', icon: BarChart3, path: '/admin' }] : []),
   ];
 
   return (
