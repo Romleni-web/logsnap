@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Zap } from 'lucide-react';
+import { Zap, Loader2, Mail, Lock, UserPlus } from 'lucide-react';
 import client from '../api/client';
 
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signUp } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,65 +16,100 @@ export default function Register() {
     setLoading(true);
 
     try {
-      // 1. Register with backend (this handles Supabase + our DB)
+      // Register with backend (this handles Supabase + our DB)
+      // The backend calls supabase.auth.sign_up, so we don't call it again on frontend
       await client.post('/api/auth/register', { email, password });
 
-      // 2. Sign in with Supabase to get session
-      await signUp(email, password);
+      // Attempt login immediately after registration
+      const { error: loginError } = await signIn(email, password);
 
-      alert("Registration successful! Please check your email for confirmation.");
-      navigate('/login');
+      if (loginError) {
+        alert("Account created! Please check your email for a confirmation link before logging in.");
+        navigate('/login');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
-      alert(err.response?.data?.detail || "Registration failed");
+      const errorMsg = err.response?.data?.detail;
+      if (errorMsg?.includes('429') || err.message?.includes('429')) {
+        alert("Too many requests. Please wait a few minutes before trying again or check if you already have an account.");
+      } else {
+        alert(errorMsg || "Registration failed. Try again.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-900 p-4">
-      <div className="w-full max-w-md space-y-8 bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#020617] p-6 relative overflow-hidden">
+      {/* Decorative Blur */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+      <div className="w-full max-w-md space-y-8 glass-card p-10 rounded-[2.5rem] relative z-10">
         <div className="text-center">
-          <div className="flex justify-center mb-4">
-            <Zap className="text-blue-500 fill-blue-500" size={40} />
+          <div className="flex justify-center mb-6">
+            <div className="bg-blue-600 p-4 rounded-3xl shadow-xl shadow-blue-500/20 animate-glow">
+              <Zap className="text-white fill-white" size={32} />
+            </div>
           </div>
-          <h2 className="text-3xl font-bold">Create Account</h2>
-          <p className="text-slate-400 mt-2">Start fixing bugs with LogSnap AI</p>
+          <h2 className="text-4xl font-black tracking-tight text-white mb-2">Create Account</h2>
+          <p className="text-slate-400 font-medium">Elevate your debugging with AI</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-slate-300">Email Address</label>
-            <input
-              type="email"
-              required
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-300 ml-1">Email Address</label>
+              <div className="relative group">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={18} />
+                <input
+                  type="email"
+                  required
+                  placeholder="name@company.com"
+                  className="w-full bg-slate-950/50 border border-slate-800 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-600"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="text-sm font-semibold text-slate-300 ml-1">Password</label>
+              <div className="relative group">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={18} />
+                <input
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                  className="w-full bg-slate-950/50 border border-slate-800 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all placeholder:text-slate-600"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium text-slate-300">Password</label>
-            <input
-              type="password"
-              required
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50"
+            className="w-full btn-primary py-4 rounded-xl flex items-center justify-center gap-2 group"
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? (
+              <Loader2 className="animate-spin" size={20} />
+            ) : (
+              <>
+                <UserPlus size={20} />
+                <span className="text-lg">Get Started</span>
+              </>
+            )}
           </button>
         </form>
 
-        <p className="text-center text-slate-400 text-sm">
-          Already have an account? <Link to="/login" className="text-blue-400 hover:underline">Login</Link>
-        </p>
+        <div className="pt-4 text-center">
+          <p className="text-slate-500 text-sm font-medium">
+            Already a member? <Link to="/login" className="text-blue-400 hover:text-blue-300 underline underline-offset-4 decoration-2">Sign in here</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

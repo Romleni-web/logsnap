@@ -7,37 +7,43 @@ export default function StatsCards({ stats }) {
       label: 'Total Debug Runs',
       value: stats?.total_runs || 0,
       icon: Activity,
-      color: 'text-blue-500'
+      color: 'from-blue-600/20 to-blue-600/5',
+      iconColor: 'text-blue-500'
     },
     {
       label: 'Cached Hits',
       value: `${stats?.cached_hits || 0}%`,
       icon: ShieldCheck,
-      color: 'text-emerald-500'
+      color: 'from-emerald-600/20 to-emerald-600/5',
+      iconColor: 'text-emerald-500'
     },
     {
       label: 'Remaining Runs',
       value: stats?.remaining_runs || 0,
       icon: Clock,
-      color: 'text-amber-500'
+      color: 'from-amber-600/20 to-amber-600/5',
+      iconColor: 'text-amber-500'
     },
     {
       label: 'Current Plan',
       value: stats?.plan?.toUpperCase() || 'FREE',
       icon: CreditCard,
-      color: 'text-purple-500'
+      color: 'from-purple-600/20 to-purple-600/5',
+      iconColor: 'text-purple-500'
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
       {cards.map((card, idx) => (
-        <div key={idx} className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-slate-400 text-sm font-medium">{card.label}</p>
-            <card.icon className={card.color} size={20} />
+        <div key={idx} className="glass-card p-6 rounded-2xl group hover:border-slate-700 transition-all duration-300">
+          <div className="flex items-start justify-between mb-4">
+            <div className={`p-3 rounded-xl bg-gradient-to-br ${card.color}`}>
+              <card.icon className={card.iconColor} size={24} />
+            </div>
           </div>
-          <p className="text-2xl font-bold">{card.value}</p>
+          <p className="text-slate-400 text-sm font-medium mb-1">{card.label}</p>
+          <p className="text-3xl font-bold tracking-tight">{card.value}</p>
         </div>
       ))}
     </div>
