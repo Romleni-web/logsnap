@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { LayoutDashboard, Settings, LogOut, Zap, ChevronRight, Activity } from 'lucide-react';
+import { LayoutDashboard, Settings, LogOut, Zap, ChevronRight, BarChart3 } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export default function Layout({ children }) {
@@ -17,25 +17,23 @@ export default function Layout({ children }) {
   const navItems = [
     { label: 'DASHBOARD', icon: LayoutDashboard, path: '/' },
     { label: 'SETTINGS', icon: Settings, path: '/settings' },
+    { label: 'ADMIN', icon: BarChart3, path: '/admin' },
   ];
 
   return (
-    <div className="flex h-screen bg-[#000] text-slate-100 w-full overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
-      {/* Sidebar - Matching efootball premium look */}
-      <aside className="w-72 bg-[#0a0a0a] border-r border-white/5 flex flex-col z-20 shadow-[20px_0_40px_rgba(0,0,0,0.5)]">
-        <div className="p-12 flex flex-col items-center">
-          <div className="bg-blue-600 p-4 rounded-[1.5rem] shadow-[0_0_40px_rgba(59,130,246,0.3)] animate-glow mb-6 group cursor-pointer transition-transform hover:scale-110">
-            <Zap className="text-white fill-white group-hover:animate-pulse" size={32} />
-          </div>
-          <div className="text-center">
-            <h1 className="text-3xl font-display font-black tracking-tighter italic text-white leading-none">
-              LOG<span className="text-blue-500">SNAP</span>
+    <div className="flex h-screen bg-white text-black w-full overflow-hidden font-sans">
+      {/* Sidebar - Professional Clean Look */}
+      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col z-20">
+        <div className="p-8 flex flex-col items-start">
+          <Link to="/" className="flex items-center gap-2 mb-8 group">
+            <Zap className="text-blue-600 fill-blue-600" size={24} />
+            <h1 className="text-xl font-bold tracking-tighter text-black">
+              LOG<span className="text-blue-600">SNAP</span>
             </h1>
-            <div className="h-1.5 w-16 bg-blue-600 mx-auto mt-3 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
-          </div>
+          </Link>
         </div>
 
-        <nav className="flex-1 px-8 space-y-4 mt-6">
+        <nav className="flex-1 px-4 space-y-1">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
@@ -43,52 +41,45 @@ export default function Layout({ children }) {
                 key={item.path}
                 to={item.path}
                 className={clsx(
-                  "flex items-center justify-between px-6 py-5 rounded-2xl transition-all duration-500 group relative overflow-hidden",
+                  "flex items-center justify-between px-4 py-3 rounded-md transition-all duration-200",
                   isActive
-                    ? "bg-blue-600/10 text-white border-l-4 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.1)]"
-                    : "text-slate-500 hover:text-white hover:bg-white/5"
+                    ? "bg-blue-50 text-blue-600 font-semibold"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-black"
                 )}
               >
-                <div className="flex items-center gap-5">
-                  <item.icon size={22} className={clsx("transition-colors duration-300", isActive ? "text-blue-500" : "group-hover:text-blue-400")} />
-                  <span className="font-display font-black text-xs tracking-[0.2em]">{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <item.icon size={18} />
+                  <span className="text-sm">{item.label}</span>
                 </div>
-                {isActive && <ChevronRight size={18} className="text-blue-500 animate-in slide-in-from-left-2" />}
+                {isActive && <ChevronRight size={14} />}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-10">
-          <div className="bg-white/5 border border-white/5 rounded-3xl p-6 mb-8 backdrop-blur-md">
-             <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-lg font-black italic shadow-lg shadow-blue-500/20 text-white">
-                  {user?.email?.charAt(0).toUpperCase()}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-black text-blue-500 tracking-[0.3em] uppercase mb-1">OPERATOR</p>
-                  <p className="text-xs font-bold text-white truncate opacity-90">{user?.email}</p>
-                </div>
-             </div>
+        <div className="p-6 border-t border-gray-100">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center text-xs font-bold text-white">
+              {user?.email?.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">OPERATOR</p>
+              <p className="text-xs font-medium text-black truncate">{user?.email}</p>
+            </div>
           </div>
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-4 px-6 py-4 w-full text-left rounded-2xl text-slate-500 hover:text-red-500 hover:bg-red-500/10 transition-all duration-300 font-display font-black text-[10px] tracking-[0.3em]"
+            className="flex items-center gap-3 px-4 py-2 w-full text-left rounded-md text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 text-sm font-medium"
           >
-            <LogOut size={20} />
-            LOG OUT TERMINAL
+            <LogOut size={16} />
+            Log Out
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto relative bg-[#000]">
-        {/* Background Patterns - UEFA Stadium Glow style */}
-        <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-blue-600/5 blur-[180px] rounded-full pointer-events-none"></div>
-        <div className="absolute -bottom-20 -left-20 w-[800px] h-[800px] bg-blue-900/5 blur-[150px] rounded-full pointer-events-none"></div>
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.05] pointer-events-none"></div>
-
-        <div className="max-w-7xl mx-auto p-16 relative z-10">
+      <main className="flex-1 overflow-auto relative bg-gray-50/50">
+        <div className="max-w-6xl mx-auto p-8 md:p-12">
           {children}
         </div>
       </main>

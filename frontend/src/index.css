@@ -3,63 +3,50 @@
 @tailwind utilities;
 
 :root {
-  --primary: #3b82f6;
-  --primary-glow: rgba(59, 130, 246, 0.3);
-  --dark: #020617;
-  --darker: #000000;
-  --glass: rgba(15, 23, 42, 0.8);
-  --font-display: 'Orbitron', sans-serif;
+  --primary: #2563eb;
+  --black: #000000;
+  --white: #ffffff;
+  --gray-light: #f3f4f6;
+  --gray-border: #e5e7eb;
 }
 
 @layer base {
   body {
-    @apply bg-[#000] text-slate-200 antialiased;
+    @apply bg-white text-black antialiased;
     font-family: 'Inter', sans-serif;
   }
 }
 
 @layer components {
   .font-display {
-    font-family: 'Orbitron', sans-serif;
+    @apply font-bold tracking-tight;
   }
 
-  .glass-card {
-    @apply bg-slate-900/40 backdrop-blur-xl border border-white/5 shadow-2xl;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  .clean-card {
+    @apply bg-white border border-gray-200 shadow-sm rounded-lg;
   }
 
   .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-500 text-white font-display font-black tracking-tighter italic
-           transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.6)]
-           active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md
+           transition-all duration-200 active:scale-[0.98] disabled:opacity-50;
   }
 
   .input-field {
-    @apply bg-black/40 border border-slate-800 rounded-xl px-5 py-4 text-white font-medium
-           focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 outline-none transition-all
-           placeholder:text-slate-700;
+    @apply bg-white border border-gray-300 rounded-md px-4 py-2 text-black
+           focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 outline-none transition-all
+           placeholder:text-gray-400 text-sm;
   }
 }
 
-/* Custom Animations */
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
-  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
-}
-
-.animate-glow {
-  animation: glow 3s infinite ease-in-out;
-}
-
-/* Scrollbar styling matching efootball */
+/* Simplified Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-black;
+  @apply bg-gray-50;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-800 rounded-full hover:bg-blue-600 transition-colors;
+  @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
 }

@@ -8,17 +8,12 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
-        display: ['Orbitron', 'sans-serif'],
+        display: ['Inter', 'sans-serif'],
       },
       colors: {
-        primary: {
-          DEFAULT: '#3b82f6',
-          glow: 'rgba(59, 130, 246, 0.3)',
-        },
-        dark: {
-          DEFAULT: '#020617',
-          darker: '#000000',
-        }
+        primary: '#2563eb',
+        black: '#000000',
+        white: '#ffffff',
       },
     },
   },
