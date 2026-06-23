@@ -7,7 +7,11 @@ app = FastAPI(title="LogSnap API")
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this to your Vercel URL
+    allow_origins=[
+        "http://localhost:5173",
+        "https://logsnap-kpp8-9glrmf16y-romleni-webs-projects.vercel.app",
+        "https://logsnap-frontend.vercel.app" # Future proofing
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
